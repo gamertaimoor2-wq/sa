@@ -1,0 +1,356 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8"/>
+<meta name="viewport" content="width=device-width,initial-scale=1,maximum-scale=1,user-scalable=no"/>
+<title>For Hemakshi</title>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.5/gsap.min.js"></script>
+<link href="https://fonts.googleapis.com/css2?family=Syne:wght@600;700;800&family=Instrument+Serif:ital@0;1&family=DM+Sans:wght@400;500;600&display=swap" rel="stylesheet"/>
+<style>
+*{margin:0;padding:0;box-sizing:border-box;-webkit-tap-highlight-color:transparent}
+html,body{height:100%;overflow:hidden;background:#12060c;color:#fff}
+body{font-family:'DM Sans',system-ui,sans-serif}
+
+.bg{position:fixed;inset:0;z-index:0;overflow:hidden;background:#12060c}
+.bg-mesh{
+  position:absolute;inset:-50%;width:200%;height:200%;
+  background:
+    radial-gradient(ellipse 55% 45% at 20% 25%,rgba(255,60,110,.3) 0%,transparent 55%),
+    radial-gradient(ellipse 50% 50% at 80% 30%,rgba(255,100,150,.22) 0%,transparent 50%),
+    radial-gradient(ellipse 45% 40% at 50% 80%,rgba(220,40,90,.2) 0%,transparent 55%),
+    radial-gradient(ellipse 40% 35% at 15% 70%,rgba(255,80,130,.14) 0%,transparent 50%);
+  animation:mesh 16s ease-in-out infinite alternate;
+}
+@keyframes mesh{
+  0%{transform:translate(0,0) scale(1)}
+  100%{transform:translate(3%,-2%) scale(1.05)}
+}
+.blob{position:absolute;border-radius:50%;filter:blur(60px);opacity:.45;animation:float 10s ease-in-out infinite}
+.blob:nth-child(1){width:300px;height:300px;background:radial-gradient(circle,rgba(255,70,120,.55),transparent 70%);top:8%;left:8%}
+.blob:nth-child(2){width:240px;height:240px;background:radial-gradient(circle,rgba(255,120,160,.4),transparent 70%);top:55%;right:5%;animation-delay:-3s;animation-duration:12s}
+.blob:nth-child(3){width:180px;height:180px;background:radial-gradient(circle,rgba(255,90,140,.4),transparent 70%);bottom:12%;left:40%;animation-delay:-6s;animation-duration:9s}
+@keyframes float{
+  0%,100%{transform:translate(0,0) scale(1)}
+  50%{transform:translate(30px,-40px) scale(1.1)}
+}
+#fx{position:fixed;inset:0;z-index:1;pointer-events:none}
+.vig{position:fixed;inset:0;z-index:2;pointer-events:none;background:radial-gradient(ellipse at center,transparent 35%,#12060cdd 100%)}
+
+/* liquid glass */
+.glass{
+  position:relative;border-radius:28px;overflow:hidden;isolation:isolate;
+  background:linear-gradient(145deg,rgba(255,255,255,.12) 0%,rgba(255,255,255,.04) 50%,rgba(255,80,120,.06) 100%);
+  backdrop-filter:blur(28px) saturate(180%);
+  -webkit-backdrop-filter:blur(28px) saturate(180%);
+  border:1px solid rgba(255,255,255,.28);
+  box-shadow:
+    0 20px 50px rgba(0,0,0,.35),
+    0 0 0 1px rgba(255,120,150,.12),
+    inset 0 1px 0 rgba(255,255,255,.45),
+    inset 0 -1px 0 rgba(255,255,255,.06);
+}
+.glass::before{
+  content:'';position:absolute;top:0;left:0;right:0;height:48%;
+  background:linear-gradient(180deg,rgba(255,255,255,.28) 0%,rgba(255,255,255,.08) 40%,transparent 100%);
+  pointer-events:none;z-index:0;
+  border-radius:28px 28px 0 0;
+}
+.glass::after{
+  content:'';position:absolute;top:8%;left:10%;width:40%;height:18%;
+  background:linear-gradient(120deg,rgba(255,255,255,.35),transparent);
+  border-radius:50%;filter:blur(8px);pointer-events:none;z-index:0;
+}
+.glass>*{position:relative;z-index:1}
+
+#start{
+  position:fixed;inset:0;z-index:100;
+  display:flex;flex-direction:column;align-items:center;justify-content:center;
+  padding:24px;transition:opacity .55s,visibility .55s;
+}
+#start.hide{opacity:0;visibility:hidden;pointer-events:none}
+#start .emoji{font-size:3.5rem;margin-bottom:16px;animation:bob 2s ease-in-out infinite}
+@keyframes bob{0%,100%{transform:translateY(0)}50%{transform:translateY(-10px)}}
+#start h1{
+  font-family:'Syne',sans-serif;font-weight:800;
+  font-size:clamp(2.4rem,11vw,3.6rem);text-align:center;line-height:1;
+  background:linear-gradient(180deg,#fff,#ffb3c8 50%,#ff4d7a);
+  -webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text;
+  margin-bottom:8px;
+}
+#start .sub{color:#ffb3c8;font-family:'Instrument Serif',serif;font-style:italic;font-size:1.15rem;margin-bottom:28px}
+#startBtn{
+  appearance:none;border:none;cursor:pointer;
+  font-family:'Syne',sans-serif;font-weight:700;font-size:1.05rem;
+  padding:16px 44px;border-radius:999px;color:#1a050c;
+  background:linear-gradient(135deg,#ffd0dc,#ff6b9d 50%,#e04070);
+  box-shadow:0 0 0 1px rgba(255,255,255,.25),0 12px 40px rgba(255,70,120,.5),inset 0 1px 0 rgba(255,255,255,.4);
+  animation:pulse 2s ease-in-out infinite;min-width:200px;
+}
+#startBtn:active{transform:scale(.96)}
+@keyframes pulse{
+  0%,100%{box-shadow:0 0 0 1px rgba(255,255,255,.25),0 12px 40px rgba(255,70,120,.5)}
+  50%{box-shadow:0 0 0 1px rgba(255,255,255,.4),0 12px 55px rgba(255,70,120,.75),0 0 70px rgba(255,70,120,.35)}
+}
+
+.app{position:relative;z-index:10;height:100%;display:flex;align-items:center;justify-content:center;padding:16px;opacity:0;pointer-events:none;transition:opacity .5s}
+.app.show{opacity:1;pointer-events:auto}
+
+.rail{position:fixed;top:0;left:0;right:0;z-index:50;display:flex;gap:4px;padding:10px 12px;opacity:0;transition:opacity .4s}
+.rail.show{opacity:1}
+.rail i{flex:1;height:3px;border-radius:2px;background:rgba(255,255,255,.12);overflow:hidden}
+.rail i b{display:block;height:100%;width:0;background:linear-gradient(90deg,#ff4d7a,#ff8aad);border-radius:2px;box-shadow:0 0 8px #ff4d7a}
+
+.slide{
+  position:absolute;inset:0;
+  display:flex;flex-direction:column;align-items:center;justify-content:center;
+  padding:52px 20px 100px;opacity:0;visibility:hidden;pointer-events:none;
+}
+.slide.on{opacity:1;visibility:visible;pointer-events:auto}
+
+.card{
+  width:min(400px,92vw);padding:32px 26px;text-align:center;
+  max-height:min(78vh,580px);overflow-y:auto;
+}
+
+.kicker{font-family:'Syne',sans-serif;font-weight:700;font-size:.68rem;letter-spacing:.22em;text-transform:uppercase;color:#ff8aad;margin-bottom:12px}
+.hero{
+  font-family:'Syne',sans-serif;font-weight:800;
+  font-size:clamp(1.9rem,8vw,2.8rem);line-height:1.05;letter-spacing:-.02em;
+  background:linear-gradient(180deg,#fff 10%,#ffc0d0 55%,#ff4d7a 100%);
+  -webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text;
+  margin-bottom:10px;
+}
+.serif{font-family:'Instrument Serif',Georgia,serif;font-style:italic;font-size:1.15rem;color:#ffb3c8;margin-bottom:14px}
+.line{font-size:clamp(1.02rem,3.2vw,1.15rem);line-height:1.7;color:rgba(255,255,255,.9);max-width:320px;margin:0 auto}
+.emoji{font-size:2.6rem;margin-bottom:12px}
+
+.chips{display:flex;flex-direction:column;gap:10px;margin:8px auto 0;width:100%}
+.chip{
+  padding:13px 15px;border-radius:16px;text-align:left;
+  background:rgba(255,255,255,.07);
+  border:1px solid rgba(255,255,255,.16);
+  font-size:.95rem;line-height:1.45;
+  opacity:0;transform:translateY(10px);
+  backdrop-filter:blur(10px);
+}
+.chip b{color:#ffc0d0}
+
+.cta-wrap{position:fixed;bottom:max(22px,env(safe-area-inset-bottom));left:0;right:0;z-index:40;display:flex;justify-content:center;pointer-events:none}
+.cta{
+  appearance:none;border:none;cursor:pointer;pointer-events:auto;
+  font-family:'Syne',sans-serif;font-weight:700;font-size:.92rem;
+  padding:14px 32px;border-radius:999px;color:#1a050c;
+  background:linear-gradient(135deg,#ffd0dc,#ff6b9d 50%,#e04070);
+  box-shadow:0 0 0 1px rgba(255,255,255,.2),0 10px 32px rgba(255,70,120,.45),inset 0 1px 0 rgba(255,255,255,.35);
+  min-width:180px;opacity:0;pointer-events:none;transition:opacity .3s;
+}
+.cta.show{opacity:1;pointer-events:auto}
+.cta:active{transform:scale(.96)}
+
+.mus{
+  position:fixed;bottom:max(22px,env(safe-area-inset-bottom));right:14px;z-index:50;
+  width:46px;height:46px;border-radius:50%;border:1px solid rgba(255,255,255,.15);
+  background:rgba(255,70,120,.22);backdrop-filter:blur(12px);
+  color:#fff;font-size:1.1rem;display:grid;place-items:center;cursor:pointer;
+  opacity:0;pointer-events:none;transition:opacity .4s;
+}
+.mus.show{opacity:1;pointer-events:auto}
+.mus.off{opacity:.4}
+
+#boom{position:fixed;inset:0;z-index:80;pointer-events:none}
+</style>
+</head>
+<body>
+
+<div class="bg">
+  <div class="bg-mesh"></div>
+  <div class="blob"></div><div class="blob"></div><div class="blob"></div>
+</div>
+<canvas id="fx"></canvas>
+<div class="vig"></div>
+<canvas id="boom"></canvas>
+
+<div id="start">
+  <div class="emoji">✨</div>
+  <h1>HEMAKSHI</h1>
+  <p class="sub">glad we met today</p>
+  <button id="startBtn">Open this 👋</button>
+</div>
+
+<audio id="bgm" loop preload="auto">
+  <source src="https://cdn.pixabay.com/download/audio/2022/03/15/audio_2bafa89159.mp3?filename=romantic-piano-112199.mp3" type="audio/mpeg"/>
+  <source src="bg.mp3" type="audio/mpeg"/>
+</audio>
+<button class="mus off" id="mus">♪</button>
+
+<div class="rail" id="rail"></div>
+
+<div class="app" id="app">
+  <section class="slide on" data-i="0">
+    <div class="card glass">
+      <div class="emoji">👋</div>
+      <div class="kicker">today</div>
+      <h1 class="hero">Hey Hemakshi</h1>
+      <p class="serif">we only just met</p>
+      <p class="line">and somehow it already feels like talking to a good one</p>
+    </div>
+  </section>
+
+  <section class="slide" data-i="1">
+    <div class="card glass">
+      <div class="kicker">just saying</div>
+      <h1 class="hero">Nice to meet you</h1>
+      <p class="line">
+        not trying to overdo it<br>
+        just wanted to leave a little something<br>
+        for the person I met today
+      </p>
+    </div>
+  </section>
+
+  <section class="slide" data-i="2">
+    <div class="card glass">
+      <div class="emoji">🌤️</div>
+      <p class="line">
+        hope your day's been kind<br>
+        and that the rest of it stays soft<br>
+        you seem like someone the world should be gentle with
+      </p>
+    </div>
+  </section>
+
+  <section class="slide" data-i="3">
+    <div class="card glass">
+      <div class="kicker">from a new friend</div>
+      <div class="chips" id="chips">
+        <div class="chip">glad our paths <b>crossed today</b></div>
+        <div class="chip">you come across as <b>genuinely kind</b></div>
+        <div class="chip">hope we get to talk more <b>sometime</b></div>
+      </div>
+    </div>
+  </section>
+
+  <section class="slide" data-i="4">
+    <div class="card glass">
+      <div class="emoji">💗</div>
+      <h1 class="hero">Take care Hemakshi</h1>
+      <p class="serif">wishing you good things</p>
+      <p class="line">no pressure · just a small hello from today</p>
+    </div>
+  </section>
+</div>
+
+<div class="cta-wrap">
+  <button class="cta" id="cta">Tap to continue</button>
+</div>
+
+<script>
+const start=document.getElementById('start');
+const startBtn=document.getElementById('startBtn');
+const app=document.getElementById('app');
+const rail=document.getElementById('rail');
+const cta=document.getElementById('cta');
+const mus=document.getElementById('mus');
+const audio=document.getElementById('bgm');
+audio.volume=.4;
+
+const slides=[...document.querySelectorAll('.slide')];
+slides.forEach(()=>{const i=document.createElement('i');i.innerHTML='<b></b>';rail.appendChild(i)});
+const bars=[...rail.querySelectorAll('b')];
+let idx=0,busy=false;
+
+startBtn.onclick=()=>{
+  audio.play().then(()=>mus.classList.remove('off')).catch(()=>{});
+  start.classList.add('hide');
+  app.classList.add('show');
+  rail.classList.add('show');
+  mus.classList.add('show');
+  cta.classList.add('show');
+  setRail(0);
+};
+
+mus.onclick=()=>{
+  if(audio.paused){audio.play();mus.classList.remove('off')}
+  else{audio.pause();mus.classList.add('off')}
+};
+
+function setRail(n){
+  bars.forEach((b,i)=>{
+    gsap.killTweensOf(b);
+    if(i<n)gsap.set(b,{width:'100%'});
+    else if(i===n)gsap.fromTo(b,{width:'0%'},{width:'100%',duration:4,ease:'none'});
+    else gsap.set(b,{width:'0%'});
+  });
+}
+
+function showChips(){
+  [...document.querySelectorAll('#chips .chip')].forEach((c,i)=>{
+    gsap.fromTo(c,{opacity:0,y:10},{opacity:1,y:0,duration:.45,delay:.1+i*.14,ease:'power3.out'});
+  });
+}
+
+function go(n){
+  if(busy||n===idx||n<0||n>=slides.length)return;
+  busy=true;
+  const prev=slides[idx],next=slides[n],dir=n>idx?1:-1;
+  gsap.to(prev,{opacity:0,y:dir*-20,duration:.32,ease:'power2.in',onComplete:()=>{prev.classList.remove('on');gsap.set(prev,{y:0})}});
+  next.classList.add('on');
+  gsap.fromTo(next,{opacity:0,y:dir*24},{opacity:1,y:0,duration:.42,ease:'power3.out',delay:.08,onComplete:()=>{busy=false}});
+  const kids=next.querySelectorAll('.kicker,.hero,.serif,.line,.emoji,.chips');
+  gsap.fromTo(kids,{opacity:0,y:12},{opacity:1,y:0,duration:.4,stagger:.05,delay:.14,ease:'power2.out'});
+  idx=n;setRail(n);
+  if(n===3)setTimeout(showChips,180);
+  if(n===4){cta.classList.remove('show');explode()}
+  else{cta.classList.add('show');cta.textContent='Tap to continue'}
+}
+
+cta.onclick=()=>{if(idx<4)go(idx+1)};
+document.addEventListener('keydown',e=>{
+  if((e.key==='ArrowRight'||e.key===' ')&&idx<4){e.preventDefault();go(idx+1)}
+  if(e.key==='ArrowLeft'&&idx>0)go(idx-1);
+});
+let tx=0;
+document.addEventListener('touchstart',e=>{tx=e.changedTouches[0].screenX},{passive:true});
+document.addEventListener('touchend',e=>{
+  const dx=e.changedTouches[0].screenX-tx;
+  if(dx<-50&&idx<4)go(idx+1);
+  if(dx>50&&idx>0)go(idx-1);
+},{passive:true});
+
+const fx=document.getElementById('fx'),ctx=fx.getContext('2d');
+let W,H,parts=[];
+function resize(){W=fx.width=innerWidth;H=fx.height=innerHeight}
+resize();addEventListener('resize',resize);
+function spawn(){
+  parts.push({x:Math.random()*W,y:Math.random()*H,vx:(Math.random()-.5)*.7,vy:(Math.random()-.5)*.7,r:Math.random()*1.8+.3,a:Math.random()*.5+.2,life:1,decay:.0025+Math.random()*.003});
+}
+for(let i=0;i<40;i++)spawn();
+(function draw(){
+  ctx.clearRect(0,0,W,H);
+  if(parts.length<70)spawn();
+  for(let i=parts.length-1;i>=0;i--){
+    const p=parts[i];p.x+=p.vx;p.y+=p.vy;p.life-=p.decay;
+    if(p.life<=0){parts.splice(i,1);continue}
+    ctx.beginPath();
+    ctx.fillStyle=`rgba(255,120,160,${p.a*p.life})`;
+    ctx.shadowBlur=10;ctx.shadowColor='rgba(255,80,130,.55)';
+    ctx.arc(p.x,p.y,p.r,0,Math.PI*2);ctx.fill();
+  }
+  requestAnimationFrame(draw);
+})();
+
+const boom=document.getElementById('boom'),bctx=boom.getContext('2d');
+function explode(){
+  boom.width=innerWidth;boom.height=innerHeight;
+  const bits=[],colors=['#ff4d7a','#ff8aad','#fff','#ffc0d0','#e04070','#ff6b9d'];
+  for(let i=0;i<100;i++)bits.push({x:innerWidth/2,y:innerHeight/2,vx:(Math.random()-.5)*12,vy:(Math.random()-.7)*11,r:Math.random()*3.5+1.5,c:colors[i%colors.length],a:1,rot:Math.random()*360,vr:(Math.random()-.5)*8});
+  let f=0;
+  (function tick(){
+    bctx.clearRect(0,0,boom.width,boom.height);
+    bits.forEach(p=>{p.x+=p.vx;p.y+=p.vy;p.vy+=.16;p.a-=.012;p.rot+=p.vr;bctx.save();bctx.translate(p.x,p.y);bctx.rotate(p.rot*Math.PI/180);bctx.fillStyle=p.c;bctx.globalAlpha=Math.max(p.a,0);bctx.fillRect(-p.r,-p.r,p.r*2,p.r*2);bctx.restore()});
+    if(++f<90)requestAnimationFrame(tick);else bctx.clearRect(0,0,boom.width,boom.height);
+  })();
+}
+</script>
+</body>
+</html>
